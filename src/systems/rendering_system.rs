@@ -37,6 +37,25 @@ impl RenderingSystem<'_> {
         let fps = format!("FPS: {:.0}", timer::fps(self.context));
         self.draw_text(&fps, 5.0, 730.0);
     }
+
+    fn render_batches(&mut self, rendering_batches: HashMap<u8, HashMap<String, Vec<DrawParam>>>) {
+        for (_z, group) in rendering_batches
+            .iter()
+            .sorted_by(|a, b| Ord::cmp(&a.0, &b.0))
+        {
+            for (image_path, draw_params) in group {
+                let image = Image::new(self.context, image_path).expect("expected image");
+                let mut sprite_batch = SpriteBatch::new(image);
+
+                for draw_param in draw_params.iter() {
+                    sprite_batch.add(*draw_param);
+                }
+
+                graphics::draw(self.context, &sprite_batch, graphics::DrawParam::new())
+                    .expect("expected render");
+            }
+        }
+    }
 }
 
 impl<'a> System<'a> for RenderingSystem<'a> {
