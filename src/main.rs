@@ -10,7 +10,6 @@ mod entities;
 mod systems;
 
 use crate::components::*;
-use crate::constants::*;
 use crate::entities::*;
 use crate::systems::*;
 
