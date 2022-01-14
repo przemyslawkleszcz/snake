@@ -22,3 +22,14 @@ pub fn create_player(world: &mut World, position: Position) {
         .with(Movable)
         .build();
 }
+
+pub fn create_floor(world: &mut World, position: Position) {
+    world
+        .create_entity()
+        .with(Position { z: 5, ..position })
+        .with(Renderable {
+            path: "/images/floor.png".to_string(),
+        })
+        .with(Immovable)
+        .build();
+}
