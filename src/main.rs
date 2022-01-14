@@ -3,8 +3,13 @@ use std::path;
 use ggez::{event, GameResult};
 use specs::{World, WorldExt};
 
+mod components;
+
+use crate::components::*;
+
 fn main() -> GameResult {
     let mut world = World::new();
+    register_components(&mut world);
 
     let context_builder = ggez::ContextBuilder::new("Snake", "Przemyslaw Kleszcz")
         .window_setup(ggez::conf::WindowSetup::default().title("Snake"))
