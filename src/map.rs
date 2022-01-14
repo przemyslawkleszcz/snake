@@ -27,7 +27,6 @@ const MAP: &str = "W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
-    W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W";
 
 pub fn initialize_level(world: &mut World) {
