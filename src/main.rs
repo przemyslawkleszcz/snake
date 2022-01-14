@@ -40,6 +40,11 @@ impl event::EventHandler<ggez::GameError> for Game {
     }
 
     fn draw(&mut self, _ctx: &mut ggez::Context) -> Result<(), ggez::GameError> {
+        {
+            let mut rs = RenderingSystem { context: _ctx };
+            rs.run_now(&self.world);
+        }
+
         Ok(())
     }
 }
