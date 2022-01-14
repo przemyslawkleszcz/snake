@@ -1,15 +1,24 @@
 use std::path;
 
 use ggez::{event, GameResult};
+use specs::RunNow;
 use specs::{World, WorldExt};
 
 mod components;
+mod constants;
+mod entities;
+mod systems;
 
 use crate::components::*;
+use crate::constants::*;
+use crate::entities::*;
+use crate::systems::*;
 
 fn main() -> GameResult {
     let mut world = World::new();
     register_components(&mut world);
+    create_player(&mut world, Position { x: 0, y: 0, z: 0 });
+    create_wall(&mut world, Position { x: 1, y: 0, z: 0 });
 
     let context_builder = ggez::ContextBuilder::new("Snake", "Przemyslaw Kleszcz")
         .window_setup(ggez::conf::WindowSetup::default().title("Snake"))
