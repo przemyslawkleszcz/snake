@@ -1,9 +1,6 @@
+use crate::components::*;
+use crate::entities::*;
 use specs::World;
-
-use crate::{
-    components::Position,
-    entities::{create_floor, create_wall},
-};
 
 const MAP: &str = "W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
