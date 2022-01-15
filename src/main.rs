@@ -8,15 +8,18 @@ mod components;
 mod constants;
 mod entities;
 mod map;
+mod resources;
 mod systems;
 
 use crate::components::*;
 use crate::map::*;
+use crate::resources::*;
 use crate::systems::*;
 
 fn main() -> GameResult {
     let mut world = World::new();
     register_components(&mut world);
+    register_resources(&mut world);
     initialize_level(&mut world);
 
     let context_builder = ggez::ContextBuilder::new("Snake", "Przemyslaw Kleszcz")
