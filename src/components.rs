@@ -22,9 +22,18 @@ pub struct Renderable {
     pub path: String,
 }
 
+//markup components
+
+#[derive(Component)]
+#[storage(VecStorage)]
+pub struct Player {}
+
 pub fn register_components(world: &mut World) {
     world.register::<Position>();
     world.register::<Movable>();
     world.register::<Immovable>();
     world.register::<Renderable>();
+
+    //markup components
+    world.register::<Player>();
 }
