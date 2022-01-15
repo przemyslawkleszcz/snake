@@ -63,6 +63,6 @@ impl event::EventHandler<ggez::GameError> for Game {
         _repeat: bool,
     ) {
         let mut input_queue = self.world.write_resource::<InputQueue>();
-        input_queue.keys_pressed.push(keycode);
+        input_queue.key_pressed = Some(keycode);
     }
 }
