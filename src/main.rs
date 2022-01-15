@@ -39,7 +39,7 @@ struct Game {
 impl event::EventHandler<ggez::GameError> for Game {
     fn update(&mut self, _ctx: &mut ggez::Context) -> Result<(), ggez::GameError> {
         {
-            let mut is = InputSystem {};
+            let mut is = InputSystem { context: _ctx };
             is.run_now(&self.world);
         }
 
