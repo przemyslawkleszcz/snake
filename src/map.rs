@@ -43,6 +43,10 @@ pub fn initialize_level(world: &mut World) {
                     create_floor(world, position);
                     create_wall(world, position);
                 }
+                "P" => {
+                    create_floor(world, position);
+                    create_player(world, position);
+                }
                 c => panic!("unrecognized map item {}", c),
             }
         }
