@@ -54,4 +54,15 @@ impl event::EventHandler<ggez::GameError> for Game {
 
         Ok(())
     }
+
+    fn key_down_event(
+        &mut self,
+        _context: &mut ggez::Context,
+        keycode: ggez::event::KeyCode,
+        _keymod: ggez::event::KeyMods,
+        _repeat: bool,
+    ) {
+        let mut input_queue = self.world.write_resource::<InputQueue>();
+        input_queue.keys_pressed.push(keycode);
+    }
 }
