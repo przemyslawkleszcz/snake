@@ -1,9 +1,6 @@
+use crate::components::*;
+use crate::entities::*;
 use specs::World;
-
-use crate::{
-    components::Position,
-    entities::{create_floor, create_wall},
-};
 
 const MAP: &str = "W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
@@ -16,7 +13,7 @@ const MAP: &str = "W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
-    W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
+    W . . . . . . . . . . . . . . . P . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
@@ -45,6 +42,10 @@ pub fn initialize_level(world: &mut World) {
                 "W" => {
                     create_floor(world, position);
                     create_wall(world, position);
+                }
+                "P" => {
+                    create_floor(world, position);
+                    create_player(world, position);
                 }
                 c => panic!("unrecognized map item {}", c),
             }

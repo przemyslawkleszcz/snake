@@ -8,15 +8,18 @@ mod components;
 mod constants;
 mod entities;
 mod map;
+mod resources;
 mod systems;
 
 use crate::components::*;
 use crate::map::*;
+use crate::resources::*;
 use crate::systems::*;
 
 fn main() -> GameResult {
     let mut world = World::new();
     register_components(&mut world);
+    register_resources(&mut world);
     initialize_level(&mut world);
 
     let context_builder = ggez::ContextBuilder::new("Snake", "Przemyslaw Kleszcz")
@@ -35,6 +38,11 @@ struct Game {
 
 impl event::EventHandler<ggez::GameError> for Game {
     fn update(&mut self, _ctx: &mut ggez::Context) -> Result<(), ggez::GameError> {
+        {
+            let mut is = InputSystem {};
+            is.run_now(&self.world);
+        }
+
         Ok(())
     }
 
@@ -45,5 +53,16 @@ impl event::EventHandler<ggez::GameError> for Game {
         }
 
         Ok(())
+    }
+
+    fn key_down_event(
+        &mut self,
+        _context: &mut ggez::Context,
+        keycode: ggez::event::KeyCode,
+        _keymod: ggez::event::KeyMods,
+        _repeat: bool,
+    ) {
+        let mut input_queue = self.world.write_resource::<InputQueue>();
+        input_queue.keys_pressed.push(keycode);
     }
 }
