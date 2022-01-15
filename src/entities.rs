@@ -20,6 +20,7 @@ pub fn create_player(world: &mut World, position: Position) {
             path: "/images/player.png".to_string(),
         })
         .with(Movable)
+        .with(Player {})
         .build();
 }
 
