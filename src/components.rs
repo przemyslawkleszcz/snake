@@ -1,6 +1,6 @@
 use specs::{Component, NullStorage, VecStorage, World, WorldExt};
 
-#[derive(Debug, Component, Clone, Copy)]
+#[derive(Debug, Component, Clone, Copy, PartialEq)]
 #[storage(VecStorage)]
 pub struct Position {
     pub x: u8,
@@ -24,7 +24,7 @@ pub struct Renderable {
 
 //markup components
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 #[storage(VecStorage)]
 pub struct Player {}
 

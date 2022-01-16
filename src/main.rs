@@ -43,6 +43,11 @@ impl event::EventHandler<ggez::GameError> for Game {
             is.run_now(&self.world);
         }
 
+        {
+            let mut cs = CollisionSystem { context: _ctx };
+            cs.run_now(&self.world);
+        }
+
         Ok(())
     }
 
