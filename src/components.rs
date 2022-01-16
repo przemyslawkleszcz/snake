@@ -24,7 +24,7 @@ pub struct Renderable {
 
 //markup components
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 #[storage(VecStorage)]
 pub struct Player {}
 
