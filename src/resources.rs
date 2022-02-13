@@ -4,6 +4,7 @@ use specs::World;
 #[derive(Default)]
 pub struct InputQueue {
     pub key_pressed: Option<KeyCode>,
+    pub previous_key_pressed: Option<KeyCode>,
     pub next_move_at: u32,
 }
 
