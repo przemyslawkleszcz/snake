@@ -10,7 +10,7 @@ const MAP: &str = "W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
-    W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
+    W . . . . . . . . I . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . W
     W . . . . . . . . . . . . . . . P . . . . . . . . . . . . . . W
@@ -46,6 +46,10 @@ pub fn initialize_level(world: &mut World) {
                 "P" => {
                     create_floor(world, position);
                     create_player(world, position);
+                }
+                "I" => {
+                    create_floor(world, position);
+                    create_item(world, position);
                 }
                 c => panic!("unrecognized map item {}", c),
             }

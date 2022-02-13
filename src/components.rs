@@ -26,7 +26,13 @@ pub struct Renderable {
 
 #[derive(Component, Debug)]
 #[storage(VecStorage)]
-pub struct Player {}
+pub struct Player {
+    pub items: u32,
+}
+
+#[derive(Component, Debug)]
+#[storage(VecStorage)]
+pub struct Item {}
 
 pub fn register_components(world: &mut World) {
     world.register::<Position>();
@@ -36,4 +42,5 @@ pub fn register_components(world: &mut World) {
 
     //markup components
     world.register::<Player>();
+    world.register::<Item>();
 }

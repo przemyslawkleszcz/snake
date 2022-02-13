@@ -7,7 +7,10 @@ use ggez::{
 
 use glam::Vec2;
 use itertools::Itertools;
-use specs::{join::Join, ReadStorage, System};
+use specs::{
+    join::Join, shred::FetchMut, storage::MaskedStorage, Entities, Entity, ReadStorage, Storage,
+    System, WriteStorage,
+};
 
 use crate::components::*;
 use crate::constants::*;
@@ -38,6 +41,11 @@ impl RenderingSystem<'_> {
         self.draw_text(&fps, 5.0, 730.0);
     }
 
+    pub fn draw_player_items(&mut self, player: &Player) {
+        let items = format!("Player items: {}", player.items);
+        self.draw_text(&items, 80.0, 730.0);
+    }
+
     fn render_batches(&mut self, rendering_batches: HashMap<u8, HashMap<String, Vec<DrawParam>>>) {
         for (_z, group) in rendering_batches
             .iter()
@@ -58,11 +66,28 @@ impl RenderingSystem<'_> {
     }
 }
 
+//need to create utility method
+fn get_player_entity(
+    players: &Storage<Player, FetchMut<MaskedStorage<Player>>>,
+    entities: &specs::Read<specs::world::EntitiesRes>,
+) -> Option<Entity> {
+    for (_player, entity) in (players, entities).join() {
+        return Some(entity);
+    }
+
+    return None;
+}
+
 impl<'a> System<'a> for RenderingSystem<'a> {
-    type SystemData = (ReadStorage<'a, Position>, ReadStorage<'a, Renderable>);
+    type SystemData = (
+        Entities<'a>,
+        ReadStorage<'a, Position>,
+        ReadStorage<'a, Renderable>,
+        WriteStorage<'a, Player>,
+    );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (positions, renderables) = data;
+        let (entities, positions, renderables, mut players) = data;
         graphics::clear(self.context, graphics::Color::new(0.95, 0.95, 0.95, 1.0));
         let mut rendering_batches: HashMap<u8, HashMap<String, Vec<DrawParam>>> = HashMap::new();
         let rendering_data = (&positions, &renderables).join().collect::<Vec<_>>();
@@ -80,6 +105,12 @@ impl<'a> System<'a> for RenderingSystem<'a> {
                 .entry(image_path)
                 .or_default()
                 .push(draw_param);
+        }
+
+        if let Some(entity) = get_player_entity(&players, &entities) {
+            if let Some(player) = players.get_mut(entity) {
+                self.draw_player_items(player);
+            }
         }
 
         self.render_batches(rendering_batches);

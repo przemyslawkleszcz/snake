@@ -20,7 +20,18 @@ pub fn create_player(world: &mut World, position: Position) {
             path: "/images/player.png".to_string(),
         })
         .with(Movable)
-        .with(Player {})
+        .with(Player { items: 0 })
+        .build();
+}
+
+pub fn create_item(world: &mut World, position: Position) {
+    world
+        .create_entity()
+        .with(Position { z: 10, ..position })
+        .with(Renderable {
+            path: "/images/item.png".to_string(),
+        })
+        .with(Item {})
         .build();
 }
 
