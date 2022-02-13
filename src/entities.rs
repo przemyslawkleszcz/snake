@@ -24,6 +24,17 @@ pub fn create_player(world: &mut World, position: Position) {
         .build();
 }
 
+pub fn create_item(world: &mut World, position: Position) {
+    world
+        .create_entity()
+        .with(Position { z: 10, ..position })
+        .with(Renderable {
+            path: "/images/item.png".to_string(),
+        })
+        .with(Item {})
+        .build();
+}
+
 pub fn create_floor(world: &mut World, position: Position) {
     world
         .create_entity()
