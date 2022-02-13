@@ -33,19 +33,60 @@ impl<'a> System<'a> for InputSystem<'a> {
         for (_player, entity) in (&players, &entities).join() {
             if let Some(key) = input_queue.key_pressed {
                 let position = positions.get_mut(entity);
-                update_position(position, key);
+                update_position(position, key, &mut input_queue);
+                input_queue.checked = CheckedState::Released;
             }
         }
     }
 }
 
-fn update_position(position: Option<&mut Position>, key: KeyCode) {
+fn update_position(
+    position: Option<&mut Position>,
+    key: KeyCode,
+    input_queue: &mut Write<InputQueue>,
+) {
     if let Some(position) = position {
         match key {
-            KeyCode::Up => position.y -= 1,
-            KeyCode::Down => position.y += 1,
-            KeyCode::Left => position.x -= 1,
-            KeyCode::Right => position.x += 1,
+            KeyCode::Up => {
+                if input_queue.previous_key_pressed.is_none()
+                    || input_queue.previous_key_pressed.unwrap() != KeyCode::Down
+                {
+                    position.y -= 1
+                } else {
+                    input_queue.key_pressed = Some(KeyCode::Down);
+                    position.y += 1
+                }
+            }
+            KeyCode::Down => {
+                if input_queue.previous_key_pressed.is_none()
+                    || input_queue.previous_key_pressed.unwrap() != KeyCode::Up
+                {
+                    position.y += 1
+                } else {
+                    input_queue.key_pressed = Some(KeyCode::Up);
+                    position.y -= 1
+                }
+            }
+            KeyCode::Left => {
+                if input_queue.previous_key_pressed.is_none()
+                    || input_queue.previous_key_pressed.unwrap() != KeyCode::Right
+                {
+                    position.x -= 1
+                } else {
+                    input_queue.key_pressed = Some(KeyCode::Right);
+                    position.x += 1
+                }
+            }
+            KeyCode::Right => {
+                if input_queue.previous_key_pressed.is_none()
+                    || input_queue.previous_key_pressed.unwrap() != KeyCode::Left
+                {
+                    position.x += 1
+                } else {
+                    input_queue.key_pressed = Some(KeyCode::Left);
+                    position.x -= 1
+                }
+            }
             _ => (),
         }
     }

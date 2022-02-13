@@ -1,9 +1,24 @@
 use ggez::event::KeyCode;
 use specs::World;
 
+#[derive(PartialEq)]
+pub enum CheckedState {
+    Started,
+    Blocked,
+    Released,
+}
+
+impl Default for CheckedState {
+    fn default() -> Self {
+        CheckedState::Started
+    }
+}
+
 #[derive(Default)]
 pub struct InputQueue {
     pub key_pressed: Option<KeyCode>,
+    pub previous_key_pressed: Option<KeyCode>,
+    pub checked: CheckedState,
     pub next_move_at: u32,
 }
 

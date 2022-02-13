@@ -68,6 +68,23 @@ impl event::EventHandler<ggez::GameError> for Game {
         _repeat: bool,
     ) {
         let mut input_queue = self.world.write_resource::<InputQueue>();
-        input_queue.key_pressed = Some(keycode);
+        if input_queue.checked == CheckedState::Started {
+            assign_key_pressed(&mut input_queue, keycode);
+        } else if input_queue.checked == CheckedState::Released {
+            if input_queue.key_pressed != Some(keycode) {
+                assign_key_pressed(&mut input_queue, keycode);
+            } else {
+                input_queue.checked = CheckedState::Blocked;
+            }
+        }
     }
+}
+
+fn assign_key_pressed(
+    input_queue: &mut specs::shred::FetchMut<InputQueue>,
+    keycode: event::KeyCode,
+) {
+    input_queue.previous_key_pressed = input_queue.key_pressed;
+    input_queue.key_pressed = Some(keycode);
+    input_queue.checked = CheckedState::Blocked;
 }
