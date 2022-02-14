@@ -32,6 +32,10 @@ pub struct Player {
 
 #[derive(Component, Debug)]
 #[storage(VecStorage)]
+pub struct Tail {}
+
+#[derive(Component, Debug)]
+#[storage(VecStorage)]
 pub struct Item {}
 
 pub fn register_components(world: &mut World) {
@@ -43,4 +47,5 @@ pub fn register_components(world: &mut World) {
     //markup components
     world.register::<Player>();
     world.register::<Item>();
+    world.register::<Tail>();
 }

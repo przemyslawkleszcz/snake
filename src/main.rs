@@ -1,5 +1,6 @@
 use std::path;
 
+use entities::create_tail;
 use ggez::{event, GameResult};
 use specs::RunNow;
 use specs::{World, WorldExt};
@@ -46,6 +47,25 @@ impl event::EventHandler<ggez::GameError> for Game {
         {
             let mut cs = CollisionSystem { context: _ctx };
             cs.run_now(&self.world);
+        }
+
+        let mut item_added = false;
+        {
+            let mut player_info = self.world.write_resource::<PlayerInfo>();
+            if player_info.previous_state < player_info.items {
+                player_info.previous_state += 1;
+                item_added = true;
+            }
+        }
+
+        if item_added {
+            let position = Position {
+                x: 5 as u8,
+                y: 5 as u8,
+                z: 0,
+            };
+
+            create_tail(&mut self.world, position);
         }
 
         Ok(())

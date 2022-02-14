@@ -4,9 +4,10 @@ use specs::{
     shred::Fetch, shred::FetchMut, storage::MaskedStorage, ReadStorage, Storage, System,
     WriteStorage,
 };
-use specs::{Entities, Entity, Join};
+use specs::{Entities, Entity, Join, Write};
 
 use crate::components::*;
+use crate::resources::PlayerInfo;
 
 pub struct CollisionSystem<'a> {
     pub context: &'a mut Context,
@@ -14,6 +15,7 @@ pub struct CollisionSystem<'a> {
 
 impl<'a> System<'a> for CollisionSystem<'a> {
     type SystemData = (
+        Write<'a, PlayerInfo>,
         Entities<'a>,
         WriteStorage<'a, Player>,
         WriteStorage<'a, Position>,
@@ -22,7 +24,7 @@ impl<'a> System<'a> for CollisionSystem<'a> {
     );
 
     fn run(&mut self, data: Self::SystemData) {
-        let (entities, mut players, mut positions, immovables, items) = data;
+        let (mut player_info, entities, mut players, mut positions, immovables, items) = data;
 
         let collision_happened = was_there_a_collision(&players, &positions, &immovables);
         if collision_happened {
@@ -33,6 +35,7 @@ impl<'a> System<'a> for CollisionSystem<'a> {
         if item_obtained {
             reset_item(&items, &entities, &mut positions);
             assign_item_to_player(&mut players, &entities);
+            player_info.items += 1;
         }
     }
 }

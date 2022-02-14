@@ -24,6 +24,18 @@ pub fn create_player(world: &mut World, position: Position) {
         .build();
 }
 
+pub fn create_tail(world: &mut World, position: Position) {
+    world
+        .create_entity()
+        .with(Position { z: 10, ..position })
+        .with(Renderable {
+            path: "/images/tail.png".to_string(),
+        })
+        .with(Movable)
+        .with(Tail {})
+        .build();
+}
+
 pub fn create_item(world: &mut World, position: Position) {
     world
         .create_entity()
